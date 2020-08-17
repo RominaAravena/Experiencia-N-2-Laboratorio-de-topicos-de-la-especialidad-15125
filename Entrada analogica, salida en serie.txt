@@ -1,0 +1,53 @@
+/*
+  Entrada analógica, salida analógica, salida en serie
+
+  Lee un pin de entrada analógica, asigna el resultado a un
+  rango de 0 a 255 y usa el resultado para establecer
+  la modulación de ancho de pulso (PWM) de una salida
+  alfiler. También imprime los resultados en la serie
+  monitor.Entrada analógica, salida analógica, salida en serie
+ 
+  El circuito:
+  * potenciómetro conectado al pin analógico 0.
+    El pin central del potenciómetro va al
+    pin analógico. los pines laterales del potenciómetro van
+    a + 5V y tierra
+  * LED conectado desde el pin digital 9 a tierra
+
+  created 29 Dec. 2008
+  modified 9 Apr 2012
+  by Tom Igoe
+
+  This example code is in the public domain.
+*/
+
+int sensorValue = 0; //variable global
+
+int outputValue = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);//pinmode son funciones 
+  pinMode(9, OUTPUT);
+  Serial.begin(9600);
+
+}
+
+void loop()
+{
+  // Lee el valor analogico:
+  sensorValue = analogRead(A0);//funcion de lectura analogica del pin A0 
+  // mapearlo al rango de la salida analogica:
+  outputValue = map(sensorValue, 0, 1023, 0, 255);//variable definida al principio
+  // cambia el valor de salida analogica:
+  analogWrite(9, outputValue);//es una funcion que tiene como requerimiento que ingresen numeros enteros
+  // imprime los resultados en el monitor serial:
+  Serial.print("sensor = ");
+  Serial.print(sensorValue);
+  Serial.print("\t output = ");
+  Serial.println(outputValue);
+  // espera 2 milisegundos antes del siguiente ciclo para 
+  // convertidor de analogico a digital para asentarse despues de la
+  // ultima lectura:
+  delay(2); // Esper 2 milisegundos(s)
+}
